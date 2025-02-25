@@ -199,6 +199,12 @@ export class WindowService {
   }
 
   private setupWebRequestHeaders(mainWindow: BrowserWindow) {
+    mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+      { urls: ['https://dev.iwhalecloud.com/chat/_next/*'] },
+      (details) => {
+        details.requestHeaders['Cookie'] = 'userId=19396; userCode=0027026774;'
+      }
+    )
     mainWindow.webContents.session.webRequest.onHeadersReceived({ urls: ['*://*/*'] }, (details, callback) => {
       if (details.responseHeaders?.['X-Frame-Options']) {
         delete details.responseHeaders['X-Frame-Options']
